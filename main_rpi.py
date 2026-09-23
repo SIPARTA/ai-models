@@ -39,6 +39,13 @@ try:
 except ImportError:
     pass
 
+import sys
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from ai_models.inference import run_inference
+
 # ─── Deteksi environment (RPi fisik atau mode simulasi PC) ──────────────────
 try:
     import RPi.GPIO as GPIO
@@ -65,7 +72,7 @@ BUZZER     = 24   # Active buzzer alarm
 # KONFIGURASI BACKEND & AUTENTIKASI
 # ============================================================
 
-# URL FastAPI Backend — ganti dengan IP server produksi atau Railway URL
+# URL FastAPI Backend — ganti dengan IP server produksi atau Render URL
 _API_BASE = os.getenv("SIPARTA_BACKEND_URL", "http://192.168.1.100:8000")
 API_URL = f"{_API_BASE}/api/v1/incidents/report"
 
@@ -171,32 +178,7 @@ def capture_image() -> str | None:
 # INFERENSI AI (ANN / TFLite)
 # ============================================================
 
-def run_inference(sensor_values: list[float]) -> str:
-    """
-    Menjalankan model ANN (TFLite) untuk mengklasifikasikan kondisi gas.
-
-    TODO: Ganti implementasi dummy di bawah dengan inferensi TFLite sungguhan:
-        interpreter = tf.lite.Interpreter(model_path="model/siparta_ann.tflite")
-        interpreter.allocate_tensors()
-        input_data = np.array([sensor_values], dtype=np.float32)
-        interpreter.set_tensor(input_index, input_data)
-        interpreter.invoke()
-        output = interpreter.get_tensor(output_index)[0]
-        return ["AMAN", "WASPADA", "BAHAYA"][np.argmax(output)]
-
-    Args:
-        sensor_values: [mics5524_v, tgs2600_v, mq2_v, mq135_v] dalam Volt.
-
-    Returns:
-        Klasifikasi: 'AMAN', 'WASPADA', atau 'BAHAYA'.
-    """
-    avg = sum(sensor_values) / len(sensor_values)
-    if avg > 3.0:
-        return "BAHAYA"
-    elif avg > 2.0:
-        return "WASPADA"
-    else:
-        return "AMAN"
+# (Logika ini sekarang ditangani oleh ai_models/inference.py)
 
 
 # ============================================================
@@ -326,7 +308,7 @@ def main():
 
     # Cooldown tracker (hindari spam laporan berulang)
     _last_report_time = 0.0
-    _report_cooldown_s = 10.0  # detik antar laporan
+    _report_cooldown_s = 30.0  # detik antar laporan
 
     try:
         while True:
