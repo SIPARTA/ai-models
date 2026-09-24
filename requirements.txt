@@ -6,26 +6,28 @@
 numpy
 pandas
 scikit-learn
-tflite-runtime       # Pengganti tensorflow penuh; sangat esensial untuk RAM 1GB RPi 3B+
-# tensorflow         # (Uncomment hanya jika melatih/export model di PC Server)
+# tflite-runtime       # Disarankan untuk Raspberry Pi (RAM 1GB) karena lebih ringan dari TensorFlow penuh
+# tensorflow-cpu       # Gunakan ini hanya untuk melatih/export model di PC atau Server
+tensorflow             # Diperlukan untuk menjalankan model inferensi utama SIPARTA
 
 # === 2. Computer Vision & Real-Time Object Detection ===
-opencv-python-headless # Headless lebih ringan (tanpa library GUI desktop X11)
-# torch              # (Komentar: Hanya install di PC/Server Backend untuk YOLOv8)
-# torchvision        # (Komentar: Hanya install di PC/Server Backend untuk YOLOv8)
-# ultralytics        # (Komentar: Hanya install di PC/Server Backend untuk YOLOv8)
+opencv-python-headless # Versi headless (tanpa GUI X11) untuk menghemat RAM di RPi
+# torch                # Hanya diinstall di PC/Server Backend untuk kebutuhan YOLOv8
+# torchvision          # Hanya diinstall di PC/Server Backend untuk kebutuhan YOLOv8
+# ultralytics          # Hanya diinstall di PC/Server Backend untuk kebutuhan YOLOv8
 
-# === 3. IoT Sensor & Hardware Control (I2C & GPIO) ===
-RPi.GPIO                       # Kontrol pin aktuator (LED, Buzzer, Button)
-smbus2                         # Komunikasi I2C murni
-adafruit-blinka                # Abstraksi CircuitPython agar kompatibel dengan RPi
-adafruit-circuitpython-ads1x15 # Library esensial pembaca ADC ADS1115 (16-bit)
+# === 3. IoT Sensor & Hardware Control (Khusus Raspberry Pi) ===
+# Catatan: Modul berikut wajib diinstall pada Raspberry Pi untuk membaca hardware fisik.
+RPi.GPIO                       # Untuk kontrol aktuator hardware (LED, Buzzer, Button)
+smbus2                         # Library untuk komunikasi protokol I2C
+adafruit-blinka                # Abstraksi layer CircuitPython (wajib untuk modul adafruit di RPi)
+adafruit-circuitpython-ads1x15 # Driver utama untuk membaca sensor analog via ADC ADS1115 (16-bit)
 
 # === 4. Backend Integration & Utilities ===
-requests             # Pengiriman data (REST API & Multipart) ke FastAPI
-python-dotenv        # Memuat environment variables (.env) untuk kredensial
+requests             # Digunakan untuk mengirim payload HTTP (REST API & Multipart) ke FastAPI Backend
+python-dotenv        # Memuat variabel environment dari file .env (kredensial API, URL, dll)
 
-# === 5. Notebook Support (Hanya berjalan di PC/Development) ===
+# === 5. Notebook Support (Khusus Lingkungan Development/PC) ===
 jupyter
 ipykernel
 matplotlib
