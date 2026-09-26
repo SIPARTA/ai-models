@@ -1,3 +1,8 @@
+# Environment
+.env
+.env.*
+!.env.example
+
 # Virtual Environments
 venv/
 env/
@@ -8,24 +13,41 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Environment Variables
-.env
-.env.*
-!.env.example
-
-# OS Files
-.DS_Store
-Thumbs.db
-
 # Jupyter Notebook
 .ipynb_checkpoints/
 
-# IDE / Editor
-.vscode/
-.idea/
-*.swp
+# Data & Datasets
+*.csv
+*.tsv
+*.json
+*.jsonl
+data/
+dataset/
+datasets/
+
+# Models & Weights
+*.pt
+*.pth
+*.h5
+*.hdf5
+*.keras
+*.onnx
+*.pkl
+*.joblib
+models/
+weights/
+checkpoints/
 
 # ML / AI / Logs
 logs/
 *.log
 *.sqlite
+runs/
+tb_logs/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
